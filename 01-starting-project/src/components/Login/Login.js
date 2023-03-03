@@ -50,6 +50,7 @@ const Login = (props) => {
   }, []);
 
   // emailState, passwordState에서 isValid 속성만 추출
+  // 최대한 단일 속성을 useEffect에 넘겨주는 것이 좋음
   const { isValid: emailIsValid } = emailState;
   const { isValid: passwordIsValid } = passwordState;
 
