@@ -12,6 +12,7 @@ const Header = (props) => {
         <HeaderCartButton />
       </header>
       <div className={classes['main-image']}>
+        {/* 이미지를 import 하면 됨 */}
         <img src={mealsImage} alt='A table full of delicious food!' />
       </div>
     </Fragment>
