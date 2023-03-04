@@ -11,10 +11,10 @@ const Cart = (props) => {
   const hasItems = cartCtx.items.length > 0
 
   const cartItemRemoveHandler = id => {
-
+    cartCtx.removeItem(id)
   }
   const cartItemAddHandler = item => {
-
+    cartCtx.addItem({...item, amount: 1})
   }
 
   // bind: 추가되거나 삭제된 항목의 id가 handler로 전달됨

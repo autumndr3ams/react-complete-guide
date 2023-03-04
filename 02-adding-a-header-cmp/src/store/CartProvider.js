@@ -33,6 +33,28 @@ const cartReducer = (state, action) => {
       items: updatedItems,
       totalAmount: updatedTotalAmount
     }
+  } else if(action.type === 'REMOVE'){
+    // cart에 이미 item이 들어있는지 확인
+    const existingCartItemIndex = state.items.findIndex(
+      (item) => item.id === action.id
+      );
+    const existingCartItem = state.items[existingCartItemIndex]
+    const updatedTotalAmount = state.totalAmount - existingCartItem.price
+
+    let updatedItems
+    if(existingCartItem.amount === 1){
+      // cart에 항목이 1개 남아있었을 경우
+      updatedItems = state.items.filter(item => item.id !== action.id)
+    } else {
+      const updatedItem = {...existingCartItem, amount: existingCartItem.amount-1}
+      updatedItems = [...state.items]
+      updatedItems[existingCartItemIndex] = updatedItem
+    }
+
+    return{
+      items: updatedItems,
+      totalAmount: updatedTotalAmount
+    }
   }
   return defaultCartState
 }
