@@ -18,6 +18,7 @@ const Tasks = (props) => {
   let content = taskList;
 
   if (props.error) {
+    // 버튼 클릭했을 때 onFetch 다시 시작 -> data fetch
     content = <button onClick={props.onFetch}>Try again</button>;
   }
 
