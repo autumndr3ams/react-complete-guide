@@ -1,11 +1,26 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState('')
   const [enteredNameTouched, setEnteredNameTouched] = useState(false)
+  // 전체 form 유효성 관리
+  // const [formIsValid, setFormIsValid] = useState(false)
+  let formIsValid = false
 
   const enteredNameIsValid = enteredName.trim() !== ''
   const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched
+
+  // enteredNameIsValid이 변할 때마다 동작함
+  // useEffect(()=>{
+  //   if(enteredNameIsValid){
+  //     setFormIsValid(true)
+  //   } else{
+  //     setFormIsValid(false)
+  //   }
+  // }, [enteredNameIsValid])
+  if(enteredNameIsValid){
+    formIsValid = true
+  }
 
   const nameInputChangeHandler = event => {
     setEnteredName(event.target.value)
@@ -40,7 +55,7 @@ const SimpleInput = (props) => {
         {nameInputIsInvalid && <p className='error-text'>Name must not be empty</p>}
       </div>
       <div className="form-actions">
-        <button>Submit</button>
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
