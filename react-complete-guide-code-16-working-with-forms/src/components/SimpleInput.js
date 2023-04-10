@@ -1,53 +1,34 @@
-import { useRef, useState, useEffect } from 'react'
+import { useState } from 'react'
 
 const SimpleInput = (props) => {
-  const nameInputRef = useRef()
   const [enteredName, setEnteredName] = useState('')
-  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false)
   const [enteredNameTouched, setEnteredNameTouched] = useState(false)
 
-  useEffect(()=>{
-    if(enteredNameIsValid){
-      console.log('Name Input is valid!')
-    }
-    // enteredNameIsValid가 변경될 때마다 동작
-  }, [enteredNameIsValid])
+  const enteredNameIsValid = enteredName.trim() !== ''
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched
 
   const nameInputChangeHandler = event => {
     setEnteredName(event.target.value)
-    if(event.target.value.trim() !== ''){
-      setEnteredNameIsValid(true)
-    }
   }
 
   const nameInputBlurHandler = event => {
     setEnteredNameTouched(true)
-    if(enteredName.trim() === ''){
-      setEnteredNameIsValid(false)
-    }
   }
 
   const formSubmissionHandler = event => {
     //http request 전송 막기
     event.preventDefault()
     setEnteredNameTouched(true);
-    // 기본적인 검증: input값이 비었을 때 return
-    if(enteredName.trim() === ''){
-      setEnteredNameIsValid(false)
+    if(!enteredNameIsValid){
       return
     }
-
-    setEnteredNameIsValid(true)
-    // 키 입력마다 입력값이 필요하다면 state가 유리
     console.log(enteredName)
-    // 제출된 값이 한 번만 필요하다면 ref가 유리
-    const enteredValue = nameInputRef.current.value
-    console.log(enteredValue)
 
     setEnteredName('') // state는 초기화 가능, ref도 가능하지만 DOM을 직접 조작하는 것이므로 바람직하지 않음
+    setEnteredNameTouched(false)
   }
 
-  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched
+  
   const nameInputClasses = nameInputIsInvalid ? 'form-control invalid' : 'form-control'
 
   return (
@@ -55,7 +36,7 @@ const SimpleInput = (props) => {
       <div className={nameInputClasses}>
         <label htmlFor='name'>Your Name</label>
         {/* 매 키마다 inputHandler 작동 */}
-        <input ref={nameInputRef} type='text' id='name' onChange={nameInputChangeHandler}/>
+        <input type='text' id='name' onChange={nameInputChangeHandler}/>
         {nameInputIsInvalid && <p className='error-text'>Name must not be empty</p>}
       </div>
       <div className="form-actions">
